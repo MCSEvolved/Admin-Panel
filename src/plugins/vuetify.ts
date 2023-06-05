@@ -24,6 +24,7 @@ export const vuetify = createVuetify({
                 hemelblauw: '#206191',
                 lichtblauw: '#2bc0d3',
                 witblauw: '#aaced1',
+                surface: '#102c47'
             }
         },
         dark: {
@@ -37,6 +38,7 @@ export const vuetify = createVuetify({
                 hemelblauw: '#206191',
                 lichtblauw: '#2bc0d3',
                 witblauw: '#aaced1',
+                surface: '#102c47'
             }
         }
     }
