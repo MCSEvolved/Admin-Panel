@@ -2,6 +2,10 @@
     <h1>Nginx Control</h1>
 
     <v-container class="list" color="donkerblauw">
+      <div class="text-end ma-2">
+        <AddRuleDialog />
+      </div>
+
       <v-layout column style="height: 100%">
         <v-card md6 style="overflow-y: auto; width: 100%">
           <v-data-table
@@ -41,6 +45,7 @@
 import {ref} from 'vue'
 import EditRuleDialog from "./EditRuleDialog.vue";
 import DeleteRuleDialog from "./DeleteRuleDialog.vue";
+import AddRuleDialog from "./AddRuleDialog.vue";
 
 
     const items = ref([
