@@ -20,9 +20,9 @@
         <v-container>
           <v-row>
             <v-col
-                cols="12"
-                sm="6"
-                md="4"
+                cols="16"
+                sm="8"
+                md="6"
             >
               <v-text-field
                   label="Service Name"
@@ -30,9 +30,9 @@
               ></v-text-field>
             </v-col>
             <v-col
-                cols="12"
-                sm="6"
-                md="4"
+                cols="16"
+                sm="8"
+                md="6"
             >
               <v-text-field
                   label="Location"
@@ -41,11 +41,11 @@
 
             </v-col>
             <v-col
-                cols="12"
-                sm="6"
-                md="4"
+                cols="16"
+                sm="8"
+                md="6"
             >
-              <v-checkbox color="red" label="add websockets"></v-checkbox>
+                <v-switch color="blue" inset label="add websockets"></v-switch>
             </v-col>
           </v-row>
           <small>port is automaticly assigned</small>

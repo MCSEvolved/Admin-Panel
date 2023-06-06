@@ -20,9 +20,9 @@
         <v-container>
           <v-row>
             <v-col
-                cols="12"
-                sm="6"
-                md="4"
+                cols="16"
+                sm="8"
+                md="6"
             >
               <v-text-field
                   label="Service Name"
@@ -31,9 +31,9 @@
               ></v-text-field>
             </v-col>
             <v-col
-                cols="12"
-                sm="6"
-                md="4"
+                cols="16"
+                sm="8"
+                md="6"
             >
               <v-text-field
                   label="Location"
@@ -42,9 +42,9 @@
               ></v-text-field>
             </v-col>
             <v-col
-                cols="12"
-                sm="6"
-                md="4"
+                cols="16"
+                sm="8"
+                md="6"
             >
               <v-text-field
                   label="Port"
@@ -52,6 +52,13 @@
                   readonly
                   disabled
               ></v-text-field>
+            </v-col>
+            <v-col
+                cols="16"
+                sm="8"
+                md="6"
+            >
+              <v-switch color="blue" inset label="add websockets"></v-switch>
             </v-col>
           </v-row>
         </v-container>
