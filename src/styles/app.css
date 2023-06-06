@@ -1,5 +1,6 @@
 body {
     background-color: #0D0D19;
+    height: 100vh;
 }
 
-html { overflow-y: hidden !important}
+html { overflow-y: auto !important}

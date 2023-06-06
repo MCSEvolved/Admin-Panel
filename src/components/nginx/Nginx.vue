@@ -1,12 +1,13 @@
 <template>
-    <h1>Nginx Control</h1>
-
-    <v-container class="list" color="donkerblauw">
-      <div class="text-end ma-2">
+    <v-container class="title-container">
+      <h1 class="title">Nginx Control</h1>
+      <div class="text-end ma-2 add-btn">
         <AddRuleDialog />
       </div>
+    </v-container>
 
-      <v-layout column style="height: 100%">
+    <v-container class="list" color="donkerblauw">
+      <v-layout column>
         <v-card md6 style="overflow-y: auto; width: 100%">
           <v-data-table
               :headers="headers"
@@ -81,9 +82,26 @@ h1 {
 
 .list {
     width: 90%;
+    height: 90%;
     margin-left: auto;
     margin-right: auto;
-    height: 90%;
+    padding-top: 0px !important;
+
+}
+
+.title-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    padding-bottom: 0px !important;
+}
+
+.title {
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+
+.add-btn {
+    grid-column-start: 3;
 }
 
 
