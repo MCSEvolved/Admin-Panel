@@ -20,10 +20,10 @@
           </v-card-title>
           <v-data-table
               :headers="(headers as DeepReadonly<{key: string, title: string}[]>)"
-              :items="store.rules"
+              :items="nginxStore.rules"
               item-key="title"
               items-per-page="10"
-              :loading="false"
+              :loading="loading"
               :search="search"
           >
 
@@ -66,6 +66,7 @@
 
     const nginxStore = useNginxStore()
     const search = ref("")
+    const loading = ref(true)
 
     const headers = [
         { title: 'Service name', key: 'serviceName', align: 'start', width: '10%'},
@@ -76,7 +77,7 @@
         { title: 'Delete', key: 'delete', align: 'center', width: '10%'},
     ]
 
-    nginxStore.fetchAllRules()
+    nginxStore.fetchAllRules().finally(() => loading.value = false)
 </script>
 
 <style>

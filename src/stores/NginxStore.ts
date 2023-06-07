@@ -13,27 +13,6 @@ export interface NginxRule {
 export const useNginxStore = defineStore('nginx', () => {
     const rules = ref<NginxRule[]>([])
 
-    rules.value = [
-        {
-            serviceName: "Filesyncer",
-            location: "/filesyncer",
-            port: 8469,
-            websocketsEnabled: true,
-            id: 0
-        }
-    ]
-
-
-    for(let i = 0 ; i < 100 ; i++) {
-        rules.value.push({
-        serviceName: `Filesyncer_${i}`,
-        location: "/filesyncer",
-        port: Math.floor(Math.random()*3000 + 5000),
-        websocketsEnabled: Math.random() > 0.5,
-        id: i
-    })
-    }
-
     const fetchAllRules = async () => {
         try {
             const {data} = await axios.get<NginxRule[]>("https://api.mcsynergy.nl/admin-panel/nginx/all")
