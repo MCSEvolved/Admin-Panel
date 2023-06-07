@@ -7,14 +7,24 @@
     </v-container>
 
     <v-container class="list" color="donkerblauw">
-      <v-layout column>
-        <v-card md6 style="overflow-y: auto; width: 100%">
+      <v-layout column style="height: 100%">
+        <v-card md6 style="overflow-y: auto; height: 100%; width: 100%">
+          <v-card-title>
+            <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Search"
+                single-line
+                hide-details
+            ></v-text-field>
+          </v-card-title>
           <v-data-table
               :headers="headers"
               :items="items"
               item-key="title"
               items-per-page="10"
               :loading="false"
+              :search="search"
           >
 
             <template v-slot:column.edit="{ item }">
@@ -62,6 +72,8 @@ import AddRuleDialog from "./AddRuleDialog.vue";
             websocketsEnabled: true
         }
     ])
+
+    const search = ref("")
 
 for(let i = 0 ; i < 100 ; i++) {
   items.value.push({
@@ -111,6 +123,5 @@ h1 {
 .add-btn {
     grid-column-start: 3;
 }
-
 
 </style>
