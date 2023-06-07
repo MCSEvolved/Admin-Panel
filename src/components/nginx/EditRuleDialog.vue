@@ -58,7 +58,12 @@
                 sm="8"
                 md="6"
             >
-              <v-switch color="blue" inset label="add websockets"></v-switch>
+              <v-switch
+                  color="blue"
+                  inset
+                  label="add websockets"
+                  :model-value="websocketsEnabled"
+              ></v-switch>
             </v-col>
           </v-row>
         </v-container>
@@ -89,9 +94,12 @@
   const dialog = ref(false)
   const props = defineProps(['item'])
 
-  const title = props.item.columns.title
-  const location = props.item.columns.location
-  const port = props.item.columns.port
+  const {
+    title,
+    location,
+    port,
+    websocketsEnabled
+  } = props.item.columns
 </script>
 
 <style scoped>

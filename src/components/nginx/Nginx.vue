@@ -31,6 +31,11 @@
               />
             </template>
 
+            <template v-slot:item.websocketsEnabled="{ item }">
+              <v-icon start v-if="item.columns.websocketsEnabled" icon="mdi-check-circle" color="green"/>
+              <v-icon start v-else icon="mdi-close-circle" color="red"/>
+            </template>
+
             <template v-slot:item.delete="{ item }">
               <DeleteRuleDialog />
             </template>
@@ -53,7 +58,8 @@ import AddRuleDialog from "./AddRuleDialog.vue";
         {
             title: "Filesyncer",
             location: "/filesyncer",
-            port: 8469
+            port: 8469,
+            websocketsEnabled: true
         }
     ])
 
@@ -61,16 +67,18 @@ for(let i = 0 ; i < 100 ; i++) {
   items.value.push({
     title: `Filesyncer_${i}`,
     location: "/filesyncer",
-    port: 8469
+    port: 8469,
+      websocketsEnabled: Math.random() > 0.5
   })
 }
 
     const headers = [
-        { title: 'Service name', key: 'title', align: 'start'},
-        { title: 'Location', key: 'location', align: 'start'},
-        { title: 'Port', key: 'port', align: 'start'},
-        { title: 'Edit', key: 'edit', align: 'center'},
-        { title: 'Delete', key: 'delete', align: 'center'},
+        { title: 'Service name', key: 'title', align: 'start', width: '10%'},
+        { title: 'Location', key: 'location', align: 'start', width: '10%'},
+        { title: 'Port', key: 'port', align: 'start', width: '8%'},
+        { title: 'websockets', key: 'websocketsEnabled', align: 'center', width: '10%'},
+        { title: 'Edit', key: 'edit', align: 'center', width: '10%'},
+        { title: 'Delete', key: 'delete', align: 'center', width: '10%'},
       ]
 </script>
 
