@@ -19,25 +19,25 @@
             ></v-text-field>
           </v-card-title>
           <v-data-table
-              :headers="headers"
-              :items="items"
+              :headers="(headers as DeepReadonly<{key: string, title: string}[]>)"
+              :items="store.rules"
               item-key="title"
               items-per-page="10"
               :loading="false"
               :search="search"
           >
 
-            <template v-slot:column.edit="{ item }">
+            <template v-slot:column.edit>
               Edit
             </template>
 
-            <template v-slot:column.delete="{ item }">
+            <template v-slot:column.delete>
               Delete
             </template>
 
             <template v-slot:item.edit="{ item }">
               <EditRuleDialog
-                  :item="item"
+                  :rule="(item.columns as NginxRule)"
               />
             </template>
 
@@ -47,7 +47,7 @@
             </template>
 
             <template v-slot:item.delete="{ item }">
-              <DeleteRuleDialog />
+              <DeleteRuleDialog :id="item.columns.id" />
             </template>
 
           </v-data-table>
@@ -57,41 +57,26 @@
 
 </template>
 
-<script setup>
-import {ref} from 'vue'
-import EditRuleDialog from "./EditRuleDialog.vue";
-import DeleteRuleDialog from "./DeleteRuleDialog.vue";
-import AddRuleDialog from "./AddRuleDialog.vue";
+<script setup lang="ts">
+    import {DeepReadonly, ref} from 'vue'
+    import EditRuleDialog from "./EditRuleDialog.vue";
+    import DeleteRuleDialog from "./DeleteRuleDialog.vue";
+    import AddRuleDialog from "./AddRuleDialog.vue";
+    import {useNginxStore, NginxRule} from "../../stores/NginxStore.ts"
 
-
-    const items = ref([
-        {
-            title: "Filesyncer",
-            location: "/filesyncer",
-            port: 8469,
-            websocketsEnabled: true
-        }
-    ])
-
+    const nginxStore = useNginxStore()
     const search = ref("")
 
-for(let i = 0 ; i < 100 ; i++) {
-  items.value.push({
-    title: `Filesyncer_${i}`,
-    location: "/filesyncer",
-    port: 8469,
-      websocketsEnabled: Math.random() > 0.5
-  })
-}
-
     const headers = [
-        { title: 'Service name', key: 'title', align: 'start', width: '10%'},
+        { title: 'Service name', key: 'serviceName', align: 'start', width: '10%'},
         { title: 'Location', key: 'location', align: 'start', width: '10%'},
         { title: 'Port', key: 'port', align: 'start', width: '8%'},
         { title: 'websockets', key: 'websocketsEnabled', align: 'center', width: '10%'},
         { title: 'Edit', key: 'edit', align: 'center', width: '10%'},
         { title: 'Delete', key: 'delete', align: 'center', width: '10%'},
-      ]
+    ]
+
+    nginxStore.fetchAllRules()
 </script>
 
 <style>

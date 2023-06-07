@@ -30,7 +30,8 @@
         <v-btn
             color="red"
             variant="text"
-            @click="dialog = false"
+            @click="remove()"
+            :loading="loading"
         >
           DELETE
         </v-btn>
@@ -39,9 +40,24 @@
   </v-dialog>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import {ref} from 'vue'
+  import { useNginxStore } from '../../stores/NginxStore';
+
+  const nginxStore = useNginxStore()
+
+  const {id} = defineProps({id: Number})
   const dialog = ref(false)
+  const loading = ref(false)
+
+  const remove = async (): Promise<void> => {
+    if(id) {
+      loading.value = true
+      await nginxStore.deleteRule(id)
+      loading.value = false
+      dialog.value = false
+    }
+  }
 </script>
 
 <style scoped>
