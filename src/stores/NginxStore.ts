@@ -15,7 +15,7 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const fetchAllRules = async () => {
         try {
-            const {data} = await axios.get<NginxRule[]>("https://api.mcsynergy.nl/admin-panel/nginx/all")
+            const {data} = await axios.get<NginxRule[]>("http://api.mcsynergy.nl/admin-panel/nginx/all")
             rules.value = data
         } catch (error) {
             alert(`Something went wrong while fetching rules.\n${error}`)
@@ -24,7 +24,7 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const fetchRuleById = async (id: number) => {
         try {
-            const {data} = await axios.get<NginxRule>(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`)
+            const {data} = await axios.get<NginxRule>(`http://api.mcsynergy.nl/admin-panel/nginx/${id}`)
             const index = rules.value.findIndex((rule) => rule.id === data.id)
             if(index !== -1) rules.value[index] = data
             else rules.value.push(data)
@@ -36,7 +36,7 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const createRule = async (rule: NginxRule) => {
         try {
-            const {data} = await axios.post<NginxRule>(`https://api.mcsynergy.nl/admin-panel/nginx`, rule)
+            const {data} = await axios.post<NginxRule>(`http://api.mcsynergy.nl/admin-panel/nginx`, rule)
             rules.value.push(rule)
             return data
         } catch (error) {
@@ -46,7 +46,7 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const updateRule = async (id: number, rule: NginxRule) => {
         try {
-            const {data} = await axios.patch<NginxRule>(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`, rule)
+            const {data} = await axios.patch<NginxRule>(`http://api.mcsynergy.nl/admin-panel/nginx/${id}`, rule)
             const index = rules.value.findIndex((rule) => rule.id === data.id)
             if(index !== -1) rules.value[index] = data
             return data
@@ -57,7 +57,7 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const deleteRule =async (id: number) => {
         try {
-            const {data} = await axios.delete<boolean>(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`)
+            const {data} = await axios.delete<boolean>(`http://api.mcsynergy.nl/admin-panel/nginx/${id}`)
             if(data) {
                 const index = rules.value.findIndex((rule) => rule.id === id)
                 if(index !== -1) rules.value.splice(index, 1)
