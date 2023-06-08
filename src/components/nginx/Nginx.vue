@@ -69,6 +69,7 @@
     const loading = ref(true)
 
     const headers = [
+        { title: 'id', key: 'id', align: 'start', width: '10%'},
         { title: 'Service name', key: 'serviceName', align: 'start', width: '10%'},
         { title: 'Location', key: 'location', align: 'start', width: '10%'},
         { title: 'Port', key: 'port', align: 'start', width: '8%'},

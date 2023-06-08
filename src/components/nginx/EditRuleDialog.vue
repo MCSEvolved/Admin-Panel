@@ -26,7 +26,7 @@
               >
                 <v-text-field
                     label="Service Name"
-                    :model-value="props.rule.serviceName"
+                    v-model="rule.serviceName"
                     :rules="[RULES.required, RULES.noDuplicateName]"
                 ></v-text-field>
               </v-col>
@@ -37,7 +37,7 @@
               >
                 <v-text-field
                     label="Location"
-                    :model-value="props.rule.location"
+                    v-model="rule.location"
                     hint="/api/tracker"
                     :rules="[RULES.required, RULES.startWithSlash]"
                 ></v-text-field>
@@ -49,7 +49,7 @@
               >
                 <v-text-field
                     label="Port"
-                    :model-value="props.rule.port"
+                    v-model="rule.port"
                     readonly
                     disabled
                 ></v-text-field>
@@ -63,7 +63,7 @@
                     color="blue"
                     inset
                     label="add websockets"
-                    :model-value="props.rule.websocketsEnabled"
+                    v-model="rule.websocketsEnabled"
                 ></v-switch>
               </v-col>
             </v-row>
@@ -106,7 +106,7 @@
     required: (value: string) => !!value || 'Required',
     startWithSlash: (value: string) => value.startsWith("/") || 'Must start with slash',
     noDuplicateName: (value: string) => 
-      value !== props.rule.serviceName && 
+      value === props.rule.serviceName || 
       !nginxStore.rules.find((rule) => rule.serviceName === value) || 'Service name must be unique'
   }
 

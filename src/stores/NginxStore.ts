@@ -36,9 +36,8 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const createRule = async (rule: NginxRule) => {
         try {
-            const {data} = await axios.post<NginxRule>(`http://api.mcsynergy.nl/admin-panel/nginx`, rule)
-            rules.value.push(rule)
-            return data
+            await axios.post(`http://api.mcsynergy.nl/admin-panel/nginx`, rule)
+            await fetchAllRules()
         } catch (error) {
             alert(`Something went wrong while creating rule.\n${error}`)
         }
@@ -46,10 +45,8 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const updateRule = async (id: number, rule: NginxRule) => {
         try {
-            const {data} = await axios.patch<NginxRule>(`http://api.mcsynergy.nl/admin-panel/nginx/${id}`, rule)
-            const index = rules.value.findIndex((rule) => rule.id === data.id)
-            if(index !== -1) rules.value[index] = data
-            return data
+            await axios.patch(`http://api.mcsynergy.nl/admin-panel/nginx/${id}`, rule)
+            await fetchRuleById(id)
         } catch (error) {
             alert(`Something went wrong while updating rule (id: ${id}).\n${error}`)
         }
@@ -57,12 +54,8 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const deleteRule =async (id: number) => {
         try {
-            const {data} = await axios.delete<boolean>(`http://api.mcsynergy.nl/admin-panel/nginx/${id}`)
-            if(data) {
-                const index = rules.value.findIndex((rule) => rule.id === id)
-                if(index !== -1) rules.value.splice(index, 1)
-            }
-            return data
+            await axios.delete(`http://api.mcsynergy.nl/admin-panel/nginx/${id}`)
+            rules.value = rules.value.filter(rule => rule.id !== id)
         } catch (error) {
             alert(`Something went wrong while deleting rule (id: ${id}).\n${error}`)
         }

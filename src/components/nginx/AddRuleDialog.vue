@@ -27,6 +27,7 @@
                 <v-text-field
                     label="Service Name"
                     :rules="[RULES.required, RULES.noDuplicateName]"
+                    v-model="rule.serviceName"
                 ></v-text-field>
               </v-col>
               <v-col
@@ -38,6 +39,7 @@
                     label="Location"
                     hint="/api/tracker"
                     :rules="[RULES.required, RULES.startWithSlash]"
+                    v-model="rule.location"
                 ></v-text-field>
 
               </v-col>
@@ -46,7 +48,7 @@
                   sm="8"
                   md="6"
               >
-                  <v-switch color="blue" inset label="add websockets"></v-switch>
+                  <v-switch color="blue" inset label="add websockets" v-model="rule"></v-switch>
               </v-col>
             </v-row>
             <small>port is automaticly assigned</small>
