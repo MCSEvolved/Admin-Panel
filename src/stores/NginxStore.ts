@@ -15,7 +15,7 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const fetchAllRules = async () => {
         try {
-            const {data} = await axios.get<NginxRule[]>("http://api.mcsynergy.nl/admin-panel/nginx/all")
+            const {data} = await axios.get<NginxRule[]>("https://api.mcsynergy.nl/admin-panel/nginx/all")
             rules.value = data
         } catch (error) {
             alert(`Something went wrong while fetching rules.\n${error}`)
@@ -24,7 +24,7 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const fetchRuleById = async (id: number) => {
         try {
-            const {data} = await axios.get<NginxRule>(`http://api.mcsynergy.nl/admin-panel/nginx/${id}`)
+            const {data} = await axios.get<NginxRule>(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`)
             const index = rules.value.findIndex((rule) => rule.id === data.id)
             if(index !== -1) rules.value[index] = data
             else rules.value.push(data)
@@ -36,7 +36,7 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const createRule = async (rule: NginxRule) => {
         try {
-            await axios.post(`http://api.mcsynergy.nl/admin-panel/nginx`, rule)
+            await axios.post(`https://api.mcsynergy.nl/admin-panel/nginx`, rule)
             await fetchAllRules()
         } catch (error) {
             alert(`Something went wrong while creating rule.\n${error}`)
@@ -45,7 +45,7 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const updateRule = async (id: number, rule: NginxRule) => {
         try {
-            await axios.patch(`http://api.mcsynergy.nl/admin-panel/nginx/${id}`, rule)
+            await axios.patch(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`, rule)
             await fetchRuleById(id)
         } catch (error) {
             alert(`Something went wrong while updating rule (id: ${id}).\n${error}`)
@@ -54,7 +54,7 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const deleteRule =async (id: number) => {
         try {
-            await axios.delete(`http://api.mcsynergy.nl/admin-panel/nginx/${id}`)
+            await axios.delete(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`)
             rules.value = rules.value.filter(rule => rule.id !== id)
         } catch (error) {
             alert(`Something went wrong while deleting rule (id: ${id}).\n${error}`)
