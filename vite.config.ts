@@ -10,5 +10,5 @@ export default defineConfig({
       }
     }
   })],
-  base: 'admin-panel'
+  base: '/admin-panel'
 })
