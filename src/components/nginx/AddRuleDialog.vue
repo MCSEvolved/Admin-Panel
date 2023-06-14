@@ -37,7 +37,7 @@
               >
                 <v-text-field
                     label="Location"
-                    hint="/api/tracker"
+                    hint="api.mcsynergy.nl/tracker"
                     :rules="[RULES.required, RULES.startWithSlash]"
                     v-model="rule.location"
                 ></v-text-field>
