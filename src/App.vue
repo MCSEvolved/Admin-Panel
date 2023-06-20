@@ -10,7 +10,9 @@ const tab = ref("nginx");
 <template>
 
   <div class="app">
-    <mcs-navbar logoSrc="/src/assets/vue.svg"/>
+    <header class="navbar">
+      <mcs-navbar logoSrc="/src/assets/vue.svg"/>
+    </header>
     <main style="display: flex;">
       <div class="tabs">
         <v-tabs
