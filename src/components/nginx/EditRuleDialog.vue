@@ -12,7 +12,7 @@
       </v-btn>
     </template>
     <v-card>
-      <v-form @submit.prevent>
+      <v-form @submit.prevent v-model="formValid">
         <v-card-title>
           <span class="text-h5">Edit</span>
         </v-card-title>

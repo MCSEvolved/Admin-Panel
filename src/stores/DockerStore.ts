@@ -7,6 +7,11 @@ export interface DockerService {
     status: string
 }
 
+export interface DockerServiceDto {
+    serviceName: string
+    composeData: File[]
+}
+
 export const useDockerStore = defineStore('docker', () => {
     const services = ref<DockerService[]>([])
 
@@ -31,7 +36,7 @@ export const useDockerStore = defineStore('docker', () => {
         }
     }
 
-    const createService = async (service: DockerService) => {
+    const createService = async (service: DockerServiceDto) => {
         try {
             await axios.post(`https://api.mcsynergy.nl/admin-panel/docker`, service)
             await fetchAllServices()
@@ -40,7 +45,7 @@ export const useDockerStore = defineStore('docker', () => {
         }
     }
 
-    const updateService = async (name: string, service: DockerService) => {
+    const updateService = async (name: string, service: string) => {
         try {
             await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}`, service)
             await fetchServiceByName(name)
