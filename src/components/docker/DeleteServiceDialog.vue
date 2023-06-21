@@ -51,7 +51,9 @@ import { useDockerStore } from '../../stores/DockerStore';
   const loading = ref(false)
 
   const remove = async (): Promise<void> => {
+    console.log("delete:", name)
     if(name) {
+      console.log("delete 2")
       loading.value = true
       await dockerStore.deleteService(name)
       loading.value = false

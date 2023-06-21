@@ -42,18 +42,22 @@
             </template>
 
             <template v-slot:item.delete="{ item }">
-              <DeleteServiceDialog :name="item.columns.name" />
+              <DeleteServiceDialog :name="item.columns.serviceName" />
             </template>
 
             <template v-slot:item.control="{ item }">
               <div class="d-flex justify-center">
-                <v-btn v-if="(item.columns.status as string).startsWith('running')" color="red">
+                <v-btn
+                  v-if="(item.columns.status as string).startsWith('running')"
+                  color="red"
+                  @click="dockerStore.stopService(item.columns.serviceName)"
+                  >
                   Stop
                 </v-btn>
-                <v-btn v-else color="green">
+                <v-btn v-else color="green" @click="dockerStore.startService(item.columns.serviceName)">
                   Start
                 </v-btn>
-                <v-btn color="grey">
+                <v-btn color="grey" @click="dockerStore.restartService(item.columns.serviceName)">
                   Restart
                 </v-btn>
               </div>

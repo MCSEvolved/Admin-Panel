@@ -26,7 +26,7 @@
               >
                 <v-text-field
                     label="Service Name"
-                    :rules="[RULES.required, RULES.onlyLetters, RULES.noDuplicateName]"
+                    :rules="[RULES.nameRequired, RULES.onlyLetters, RULES.lowercase, RULES.noDuplicateName]"
                     v-model="service.serviceName"
                 ></v-text-field>
               </v-col>
@@ -39,7 +39,7 @@
               <v-file-input
                 label="Compose file"
                 accept=".yml,.yaml"
-                :rules="[RULES.required]"
+                :rules="[RULES.fileRequired]"
                 v-model="service.composeData"
               ></v-file-input>
               </v-col>
@@ -73,7 +73,7 @@
 
 <script setup lang="ts">
   import {ref} from 'vue'
-  import { DockerServiceDto, useDockerStore } from '../../stores/DockerStore';
+  import { useDockerStore } from '../../stores/DockerStore';
 
   const dockerStore = useDockerStore()
 
@@ -81,21 +81,29 @@
   const loading = ref(false)
   const formValid = ref(false)
 
-  const service = ref<DockerServiceDto>({
+  const service = ref<{
+    serviceName: string
+    composeData: File[]
+}>({
     serviceName: "",
     composeData: []
   })
 
   const RULES = {
-    required: (value: string) => value.length === 1|| 'Required',
+    nameRequired: (value: string) => !!value || 'Required',
+    fileRequired: (value: string) => value.length === 1 || 'Required',
     noDuplicateName: (value: string) => !dockerStore.services.find((service) => service.serviceName === value) || 'Service name must be unique',
-    onlyLetters: (value: string) => /^[A-Za-z]*$/.test(value) ? true : 'Only letters allowed'
+    onlyLetters: (value: string) => /^[A-Za-z\-]*$/.test(value) || 'Only letters and hyphens allowed',
+    lowercase: (value: string) => value === value.toLowerCase() || 'Only lowercase allowed'
   }
 
   const create = async (): Promise<void> => {
     if(!formValid.value) return
     loading.value = true
-    await dockerStore.createService(service.value)
+    await dockerStore.createService({
+      serviceName: service.value.serviceName,
+      composeData: await service.value.composeData[0].text()
+    })
     loading.value = false
     dialog.value = false
   }

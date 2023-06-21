@@ -9,7 +9,7 @@ export interface DockerService {
 
 export interface DockerServiceDto {
     serviceName: string
-    composeData: File[]
+    composeData: string
 }
 
 export const useDockerStore = defineStore('docker', () => {
@@ -47,7 +47,7 @@ export const useDockerStore = defineStore('docker', () => {
 
     const updateService = async (name: string, service: string) => {
         try {
-            await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}`, service)
+            await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}`, {composeData: service})
             await fetchServiceByName(name)
         } catch (error) {
             alert(`Something went wrong while updating service (name: ${name}).\n${error}`)
@@ -56,7 +56,7 @@ export const useDockerStore = defineStore('docker', () => {
 
     const deleteService = async (name: string) => {
         try {
-            await axios.delete(`https://api.mcsynergy.nl/admin-panel/nginx/${name}`)
+            await axios.delete(`https://api.mcsynergy.nl/admin-panel/docker/${name}`)
             services.value = services.value.filter(service => service.serviceName !== name)
         } catch (error) {
             alert(`Something went wrong while deleting service (name: ${name}).\n${error}`)
@@ -65,7 +65,7 @@ export const useDockerStore = defineStore('docker', () => {
 
     const startService =async (name: string) => {
         try {
-            await axios.patch(`https://api.mcsynergy.nl/admin-panel/nginx/${name}/start`)
+            await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}/start`)
             const service = services.value.find(service => service.serviceName === name)
             if(service) service.status = "running(1)"
         } catch (error) {
@@ -75,7 +75,7 @@ export const useDockerStore = defineStore('docker', () => {
 
     const stopService =async (name: string) => {
         try {
-            await axios.patch(`https://api.mcsynergy.nl/admin-panel/nginx/${name}/stop`)
+            await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}/stop`)
             const service = services.value.find(service => service.serviceName === name)
             if(service) service.status = "exited(1)"
         } catch (error) {
@@ -85,7 +85,7 @@ export const useDockerStore = defineStore('docker', () => {
 
     const restartService =async (name: string) => {
         try {
-            await axios.patch(`https://api.mcsynergy.nl/admin-panel/nginx/${name}/restart`)
+            await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}/restart`)
             const service = services.value.find(service => service.serviceName === name)
             if(service) service.status = "running(1)"
         } catch (error) {
