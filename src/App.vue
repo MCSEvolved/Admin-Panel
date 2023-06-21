@@ -4,7 +4,7 @@ import { ref } from "vue";
 import Nginx from "./components/nginx/Nginx.vue";
 import Docker from "./components/docker/Docker.vue"
 
-const tab = ref("nginx");
+const tab = ref("docker");
 </script>
 
 <template>

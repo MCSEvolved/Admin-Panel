@@ -45,6 +45,48 @@
               <DeleteServiceDialog :name="item.columns.name" />
             </template>
 
+            <template v-slot:item.control="{ item }">
+              <div class="d-flex justify-center">
+                <v-btn v-if="(item.columns.status as string).startsWith('running')" color="red">
+                  Stop
+                </v-btn>
+                <v-btn v-else color="green">
+                  Start
+                </v-btn>
+                <v-btn color="grey">
+                  Restart
+                </v-btn>
+              </div>
+            </template>
+
+            <template v-slot:item.status="{item}">
+              <div v-if="(item.columns.status as string).startsWith('exited')">
+                <v-icon size="x-large" icon="mdi-pause-circle" color="red" ref="exitedIconRef" class="status-icon"></v-icon>
+                <v-tooltip
+                    :activator="$refs.exitedIconRef as Element"
+                    location="start">
+                  Exited
+                </v-tooltip>
+              </div>
+              <div v-else-if="(item.columns.status as string).startsWith('created')">
+                <v-icon size="x-large" icon="mdi-pause-circle" color="grey" ref="createdIconRef" class="status-icon"></v-icon>
+                <v-tooltip
+                    :activator="$refs.createdIconRef as Element"
+                    location="start">
+                  Created
+                </v-tooltip>
+              </div>
+              <div v-else-if="(item.columns.status as string).startsWith('running')">
+                <v-icon size="x-large" icon="mdi-play-circle" color="green" ref="runningIconRef" class="status-icon"></v-icon>
+                <v-tooltip
+                    :activator="$refs.runningIconRef as Element"
+                    location="start">
+                  Running
+                </v-tooltip>
+              </div>
+
+            </template>
+
           </v-data-table>
         </v-card>
       </v-layout>
@@ -66,6 +108,7 @@
     const headers = [
         { title: 'Service name', key: 'serviceName', align: 'start', width: '10%'},
         { title: 'Status', key: 'status', align: 'center', width: '10%'},
+        { title: 'Control', key: 'control', align: 'center', width: '10%'},
         { title: 'Edit', key: 'edit', align: 'center', width: '10%'},
         { title: 'Delete', key: 'delete', align: 'center', width: '10%'},
     ]
@@ -101,6 +144,10 @@ h1 {
 
 .add-btn {
     grid-column-start: 3;
+}
+
+.status-icon {
+  margin-right: 1.5rem;
 }
 
 </style>
