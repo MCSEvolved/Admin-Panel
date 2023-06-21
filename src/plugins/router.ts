@@ -1,4 +1,3 @@
-import App from "../App.vue"
 import { createRouter, createWebHistory } from 'vue-router'
 import Nginx from "../components/nginx/Nginx.vue"
 import Docker from "../components/docker/Docker.vue"
