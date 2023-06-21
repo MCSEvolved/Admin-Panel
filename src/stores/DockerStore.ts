@@ -36,6 +36,15 @@ export const useDockerStore = defineStore('docker', () => {
         }
     }
 
+    const fetchLogs = async (name: string) => {
+        try {
+            const {data} = await axios.get<string>(`https://api.mcsynergy.nl/admin-panel/docker/${name}/logs`)
+            return data
+        } catch (error) {
+            alert(`Something went wrong while fetching logs (name: ${name}).\n${error}`)
+        }
+    }
+
     const createService = async (service: DockerServiceDto) => {
         try {
             await axios.post(`https://api.mcsynergy.nl/admin-panel/docker`, service)
@@ -93,5 +102,5 @@ export const useDockerStore = defineStore('docker', () => {
         }
     }
 
-    return {services, fetchAllServices, fetchServiceByName, createService, updateService, deleteService, startService, stopService, restartService}
+    return {services, fetchAllServices, fetchServiceByName, fetchLogs, createService, updateService, deleteService, startService, stopService, restartService}
 })

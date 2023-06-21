@@ -19,7 +19,7 @@ const router = useRouter()
             v-model="tab"
             direction="vertical"
             color="white" bgColor="donkerblauw"
-            @update:model-value="router.push(tab)"
+            @update:model-value="router.push({name: tab})"
           >
           <v-tab value="nginx">Nginx</v-tab>
           <v-tab value="docker">Docker</v-tab>

@@ -26,6 +26,10 @@
               :loading="loading"
               :search="search"
           >
+            <template v-slot:item.serviceName="{ item }">
+              <!-- <router-link :to="`/admin-panel/docker/${item.columns.serviceName}`">{{ item.columns.serviceName }}</router-link> -->
+              <v-btn color="blue" variant="plain" :to="{name: 'docker-logs', params: {serviceName: item.columns.serviceName}}">{{ item.columns.serviceName }}</v-btn>
+            </template>
 
             <template v-slot:column.edit>
               Edit
