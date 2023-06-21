@@ -13,6 +13,7 @@
     "mcs-navbar": "github:MCSEvolved/Navbar",
     "pinia": "^2.1.3",
     "vue": "^3.2.47",
+    "vue-router": "^4.2.2",
     "vuetify": "^3.3.2"
   },
   "devDependencies": {

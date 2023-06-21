@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import "mcs-navbar"
 import { ref } from "vue";
-import Nginx from "./components/nginx/Nginx.vue";
-import Docker from "./components/docker/Docker.vue"
+import {useRouter} from 'vue-router'
 
 const tab = ref("docker");
+const router = useRouter()
 </script>
 
 <template>
@@ -19,21 +19,17 @@ const tab = ref("docker");
             v-model="tab"
             direction="vertical"
             color="white" bgColor="donkerblauw"
+            @update:model-value="router.push(tab)"
           >
           <v-tab value="nginx">Nginx</v-tab>
           <v-tab value="docker">Docker</v-tab>
         </v-tabs>
       </div>
 
-      <v-window v-model="tab" class="window" direction="vertical">
-        <v-window-item value="nginx" class="window">
-          <Nginx />
-        </v-window-item>
+      <div class="window">
+        <router-view></router-view>
 
-        <v-window-item value="docker">
-          <Docker />
-        </v-window-item>
-      </v-window>
+      </div>
     </main>
   </div>
 
