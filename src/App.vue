@@ -3,8 +3,9 @@ import "mcs-navbar"
 import { ref } from "vue";
 import {useRouter} from 'vue-router'
 
-const tab = ref("docker");
 const router = useRouter()
+const tab = ref(window.location.pathname.split("/")[2]);
+
 </script>
 
 <template>
