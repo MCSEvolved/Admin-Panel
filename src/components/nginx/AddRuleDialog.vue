@@ -48,7 +48,7 @@
                   sm="8"
                   md="6"
               >
-                  <v-switch color="blue" inset label="add websockets" v-model="rule"></v-switch>
+                  <v-switch color="blue" inset label="add websockets" v-model="rule.websocketsEnabled"></v-switch>
               </v-col>
             </v-row>
             <small>port is automaticly assigned</small>
