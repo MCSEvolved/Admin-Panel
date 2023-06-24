@@ -10,8 +10,12 @@
                 >
 
                 <template v-slot:default="{ item }">
-                    <span class="text-no-wrap" style="width: 50px; display: block;" @vue:mounted="scrollToBottom">
-                        {{ item }}
+                    <span
+                    class="text-no-wrap"
+                    style="width: 50px;
+                    display: block;"
+                    @vue:mounted="scrollToBottom"
+                    v-html="item">
                     </span>
                 </template>
 
