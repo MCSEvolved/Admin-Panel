@@ -27,7 +27,6 @@
               :search="search"
           >
             <template v-slot:item.serviceName="{ item }">
-              <!-- <router-link :to="`/admin-panel/docker/${item.columns.serviceName}`">{{ item.columns.serviceName }}</router-link> -->
               <v-btn color="blue" variant="plain" :to="{name: 'docker-logs', params: {serviceName: item.columns.serviceName}}">{{ item.columns.serviceName }}</v-btn>
             </template>
 
@@ -54,15 +53,15 @@
                 <v-btn
                   v-if="(item.columns.status as string).startsWith('running')"
                   color="red"
-                  @click="dockerStore.stopService(item.columns.serviceName)"
+                  @click="stopService(item.columns.serviceName)"
                   >
                   Stop
                 </v-btn>
-                <v-btn v-else color="green" @click="dockerStore.startService(item.columns.serviceName)">
+                <v-btn v-else color="green" @click="startService(item.columns.serviceName)">
                   Start
                 </v-btn>
-                <v-btn color="grey" @click="dockerStore.restartService(item.columns.serviceName)">
-                  Restart
+                <v-btn color="grey" @click="resetService(item.columns.serviceName)">
+                  Reset
                 </v-btn>
               </div>
             </template>
@@ -100,6 +99,15 @@
       </v-layout>
     </v-container>
 
+    <v-overlay
+      v-model="loadService"
+      class="align-center justify-center"
+      :close-on-content-click="false"
+      persistent
+    >
+    <v-progress-circular indeterminate :size="128"></v-progress-circular>
+    </v-overlay>
+
 </template>
 
 <script setup lang="ts">
@@ -113,6 +121,8 @@
     const search = ref("")
     const loading = ref(true)
 
+    const loadService = ref(false)
+
     const headers = [
         { title: 'Service name', key: 'serviceName', align: 'start', width: '10%'},
         { title: 'Status', key: 'status', align: 'center', width: '10%'},
@@ -122,6 +132,21 @@
     ]
 
     dockerStore.fetchAllServices().finally(() => loading.value = false)
+
+    const stopService = async (name: string) => {
+      loadService.value = true
+      dockerStore.stopService(name).finally(() => loadService.value = false)
+
+    }
+    const startService = async (name: string) => {
+      loadService.value = true
+      dockerStore.startService(name).finally(() => loadService.value = false)
+
+    }
+    const resetService = (name: string) => {
+      loadService.value = true
+      dockerStore.resetService(name).finally(() => loadService.value = false)
+    }
 </script>
 
 <style>

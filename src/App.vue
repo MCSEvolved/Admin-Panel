@@ -20,10 +20,9 @@ const tab = ref(window.location.pathname.split("/")[2]);
             v-model="tab"
             direction="vertical"
             color="white" bgColor="donkerblauw"
-            @update:model-value="router.push({name: tab})"
           >
-          <v-tab value="nginx">Nginx</v-tab>
-          <v-tab value="docker">Docker</v-tab>
+          <v-tab value="nginx" @click="router.push({name: 'nginx'})">Nginx</v-tab>
+          <v-tab value="docker" @click="router.push({name: 'docker'})">Docker</v-tab>
         </v-tabs>
       </div>
 

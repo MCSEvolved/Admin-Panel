@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 
 export interface DockerService {
     serviceName: string
@@ -16,91 +16,101 @@ export const useDockerStore = defineStore('docker', () => {
     const services = ref<DockerService[]>([])
 
     const fetchAllServices = async () => {
-        try {
-            const {data} = await axios.get<DockerService[]>("https://api.mcsynergy.nl/admin-panel/docker/all")
-            services.value = data
-        } catch (error) {
-            alert(`Something went wrong while fetching services.\n${error}`)
-        }
+        const res = await axios.get<DockerService[]>("https://api.mcsynergy.nl/admin-panel/docker/all")
+        .catch((error: AxiosError<{message: string}>) => 
+            alert(`Something went wrong while fetching services.\n${error.response?.data.message}`)
+        )
+        if(res) services.value = res.data
     }
 
     const fetchServiceByName = async (name: string) => {
-        try {
-            const {data} = await axios.get<DockerService>(`https://api.mcsynergy.nl/admin-panel/docker/${name}`)
-            const index = services.value.findIndex((service) => service.serviceName === data.serviceName)
-            if(index !== -1) services.value[index] = data
-            else services.value.push(data)
-            return data
-        } catch (error) {
-            alert(`Something went wrong while fetching service (name: ${name}).\n${error}`)
-        }
+        const res = await axios.get<DockerService>(`https://api.mcsynergy.nl/admin-panel/docker/${name}`)
+        .catch((error: AxiosError<{message: string}>) => 
+            alert(`Something went wrong while fetching service (name: ${name}).\n${error.response?.data.message}`)
+        )
+        if(!res) return;
+        const index = services.value.findIndex((service) => service.serviceName === res.data.serviceName)
+        if (index !== -1) services.value[index] = res.data
+        else services.value.push(res.data)
+        return res.data
     }
 
     const fetchLogs = async (name: string) => {
-        try {
-            const {data} = await axios.get<string>(`https://api.mcsynergy.nl/admin-panel/docker/${name}/logs`)
-            return data
-        } catch (error) {
-            alert(`Something went wrong while fetching logs (name: ${name}).\n${error}`)
-        }
+        const res = await axios.get<string>(`https://api.mcsynergy.nl/admin-panel/docker/${name}/logs`)
+        .catch((error: AxiosError<{message: string}>) => 
+            alert(`Something went wrong while fetching logs (name: ${name}).\n${error.response?.data.message}`)
+        )
+        return res?.data
     }
 
     const createService = async (service: DockerServiceDto) => {
-        try {
-            await axios.post(`https://api.mcsynergy.nl/admin-panel/docker`, service)
-            await fetchAllServices()
-        } catch (error) {
-            alert(`Something went wrong while creating service.\n${error}`)
-        }
+        await axios.post(`https://api.mcsynergy.nl/admin-panel/docker`, service)
+        .catch((error: AxiosError<{message: string}>) => 
+            alert(`Something went wrong while creating service.\n${error.response?.data.message}`)
+        )
+        await fetchAllServices()
     }
 
     const updateService = async (name: string, service: string) => {
-        try {
-            await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}`, {composeData: service})
-            await fetchServiceByName(name)
-        } catch (error) {
-            alert(`Something went wrong while updating service (name: ${name}).\n${error}`)
-        }
+        await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}`, { composeData: service })
+        .catch((error: AxiosError<{message: string}>) => 
+            alert(`Something went wrong while updating service.\n${error.response?.data.message}`)
+        )
+        await fetchServiceByName(name)
     }
 
     const deleteService = async (name: string) => {
-        try {
-            await axios.delete(`https://api.mcsynergy.nl/admin-panel/docker/${name}`)
-            services.value = services.value.filter(service => service.serviceName !== name)
-        } catch (error) {
-            alert(`Something went wrong while deleting service (name: ${name}).\n${error}`)
-        }
+        await axios.delete(`https://api.mcsynergy.nl/admin-panel/docker/${name}`)
+        .catch((error: AxiosError<{message: string}>) => 
+            alert(`Something went wrong while deleting service.\n${error.response?.data.message}`)
+        )
+        await fetchAllServices()
     }
 
-    const startService =async (name: string) => {
-        try {
-            await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}/start`)
-            const service = services.value.find(service => service.serviceName === name)
-            if(service) service.status = "running(1)"
-        } catch (error) {
-            alert(`Something went wrong while starting service (name: ${name}).\n${error}`)
-        }
+    const startService = async (name: string) => {
+        await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}/start`)
+        .catch((error: AxiosError<{message: string}>) => 
+            alert(`Something went wrong while starting service.\n${error.response?.data.message}`)
+        )
+        await fetchServiceByName(name)
     }
 
-    const stopService =async (name: string) => {
-        try {
-            await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}/stop`)
-            const service = services.value.find(service => service.serviceName === name)
-            if(service) service.status = "exited(1)"
-        } catch (error) {
-            alert(`Something went wrong while starting service (name: ${name}).\n${error}`)
-        }
+    const stopService = async (name: string) => {
+        await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}/stop`)
+        .catch((error: AxiosError<{message: string}>) => 
+            alert(`Something went wrong while stopping service.\n${error.response?.data.message}`)
+        )
+        await fetchServiceByName(name)
     }
 
-    const restartService =async (name: string) => {
-        try {
-            await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}/restart`)
-            const service = services.value.find(service => service.serviceName === name)
-            if(service) service.status = "running(1)"
-        } catch (error) {
-            alert(`Something went wrong while starting service (name: ${name}).\n${error}`)
-        }
+    const restartService = async (name: string) => {
+        await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}/restart`)
+        .catch((error: AxiosError<{message: string}>) => 
+            alert(`Something went wrong while restarting service.\n${error.response?.data.message}`)
+        )
+        await fetchServiceByName(name)
     }
 
-    return {services, fetchAllServices, fetchServiceByName, fetchLogs, createService, updateService, deleteService, startService, stopService, restartService}
+    const resetService = async (name: string) => {
+        await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}/reset`)
+        .catch((error: AxiosError<{message: string}>) => 
+            alert(`Something went wrong while resetting service.\n${error.response?.data.message}`)
+        )
+        await fetchServiceByName(name)
+    }
+
+    return {
+        services,
+        fetchAllServices,
+        fetchServiceByName,
+        fetchLogs,
+        createService,
+        updateService,
+        deleteService,
+        startService,
+        stopService,
+        restartService,
+        resetService
+    }
+
 })
