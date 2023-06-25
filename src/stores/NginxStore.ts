@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 
 export interface NginxRule {
     id: number
@@ -14,51 +14,48 @@ export const useNginxStore = defineStore('nginx', () => {
     const rules = ref<NginxRule[]>([])
 
     const fetchAllRules = async () => {
-        try {
-            const {data} = await axios.get<NginxRule[]>("https://api.mcsynergy.nl/admin-panel/nginx/all")
-            rules.value = data
-        } catch (error) {
-            alert(`Something went wrong while fetching rules.\n${error}`)
-        }
+        const res = await axios.get<NginxRule[]>("https://api.mcsynergy.nl/admin-panel/nginx/all")
+        .catch((error: AxiosError<{message: string}>) => 
+            alert(`Something went wrong while fetching rules.\n${error.response?.data.message}`)
+        )
+        if(res) rules.value = res.data
     }
 
     const fetchRuleById = async (id: number) => {
-        try {
-            const {data} = await axios.get<NginxRule>(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`)
-            const index = rules.value.findIndex((rule) => rule.id === data.id)
-            if(index !== -1) rules.value[index] = data
-            else rules.value.push(data)
-            return data
-        } catch (error) {
-            alert(`Something went wrong while fetching rule (id: ${id}).\n${error}`)
-        }
+        const res = await axios.get<NginxRule>(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`)
+        .catch((error: AxiosError<{message: string}>) => 
+            alert(`Something went wrong while fetching rule (id: ${id}).\n${error.response?.data.message}`)
+        )
+        if(!res) return;
+        const {data} = res;
+        const index = rules.value.findIndex((rule) => rule.id === data.id)
+        if(index !== -1) rules.value[index] = data
+        else rules.value.push(data)
+        return data
     }
 
     const createRule = async (rule: NginxRule) => {
-        try {
-            await axios.post(`https://api.mcsynergy.nl/admin-panel/nginx`, rule)
-            await fetchAllRules()
-        } catch (error) {
-            alert(`Something went wrong while creating rule.\n${error}`)
-        }
+        await axios.post(`https://api.mcsynergy.nl/admin-panel/nginx`, rule)
+        .catch((error: AxiosError<{message: string}>) => 
+            alert(`Something went wrong while creating rule.\n${error.response?.data.message}`)
+        )
+        await fetchAllRules()
     }
 
     const updateRule = async (id: number, rule: NginxRule) => {
-        try {
-            await axios.patch(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`, rule)
-            await fetchRuleById(id)
-        } catch (error) {
-            alert(`Something went wrong while updating rule (id: ${id}).\n${error}`)
-        }
+        await axios.patch(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`, rule)
+        .catch((error: AxiosError<{message: string}>) => 
+            alert(`Something went wrong while updating rule (id: ${id}).\n${error.response?.data.message}`)
+        )
+        await fetchRuleById(id)
     }
 
     const deleteRule =async (id: number) => {
-        try {
-            await axios.delete(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`)
-            rules.value = rules.value.filter(rule => rule.id !== id)
-        } catch (error) {
-            alert(`Something went wrong while deleting rule (id: ${id}).\n${error}`)
-        }
+        await axios.delete(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`)
+        .catch((error: AxiosError<{message: string}>) => 
+            alert(`Something went wrong while deleting rule (id: ${id}).\n${error.response?.data.message}`)
+        )
+        await fetchAllRules()
     }
 
     return {rules, fetchAllRules, fetchRuleById, createRule, updateRule, deleteRule}
