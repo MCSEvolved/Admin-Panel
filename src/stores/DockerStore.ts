@@ -2,21 +2,25 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import axios, { AxiosError } from 'axios'
 
-export interface DockerService {
+export interface DockerServiceRo {
     serviceName: string
     status: string
+    hasTerminal: boolean
+    terminalCommand: string
 }
 
 export interface DockerServiceDto {
     serviceName: string
     composeData: string
+    hasTerminal: boolean
+    terminalCommand: string
 }
 
 export const useDockerStore = defineStore('docker', () => {
-    const services = ref<DockerService[]>([])
+    const services = ref<DockerServiceRo[]>([])
 
     const fetchAllServices = async () => {
-        const res = await axios.get<DockerService[]>("https://api.mcsynergy.nl/admin-panel/docker/all")
+        const res = await axios.get<DockerServiceRo[]>("https://api.mcsynergy.nl/admin-panel/docker/all")
         .catch((error: AxiosError<{message: string}>) => 
             alert(`Something went wrong while fetching services.\n${error.response?.data.message}`)
         )
@@ -24,7 +28,7 @@ export const useDockerStore = defineStore('docker', () => {
     }
 
     const fetchServiceByName = async (name: string) => {
-        const res = await axios.get<DockerService>(`https://api.mcsynergy.nl/admin-panel/docker/${name}`)
+        const res = await axios.get<DockerServiceRo>(`https://api.mcsynergy.nl/admin-panel/docker/${name}`)
         .catch((error: AxiosError<{message: string}>) => 
             alert(`Something went wrong while fetching service (name: ${name}).\n${error.response?.data.message}`)
         )
@@ -52,7 +56,7 @@ export const useDockerStore = defineStore('docker', () => {
     }
 
     const updateService = async (name: string, service: string) => {
-        await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}`, { composeData: service })
+        await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}`, { service })
         .catch((error: AxiosError<{message: string}>) => 
             alert(`Something went wrong while updating service.\n${error.response?.data.message}`)
         )

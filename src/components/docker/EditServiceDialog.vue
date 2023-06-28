@@ -28,8 +28,31 @@
                 label="Compose file"
                 accept=".yml,.yaml"
                 :rules="[RULES.required]"
-                v-model="composeData"
+                v-model="service.composeData"
               ></v-file-input>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col
+                  cols="6"
+                  sm="3"
+                  md="2"
+              >
+                <v-checkbox label="has terminal" v-model="service.hasTerminal"/>
+
+              </v-col>
+
+              <v-col
+                  cols="16"
+                  sm="8"
+                  md="6"
+              >
+              <v-text-field
+                    label="Terminal command"
+                    placeholder="/bin/bash"
+                    :rules="[RULES.commandRequiredIfChecked]"
+                    v-model="service.terminalCommand"
+                ></v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -58,25 +81,34 @@
 
 <script setup lang="ts">
   import {ref} from 'vue'
-import { DockerService, useDockerStore } from '../../stores/DockerStore';
+import { DockerServiceRo, useDockerStore } from '../../stores/DockerStore';
 
   const dockerStore = useDockerStore()
 
   const dialog = ref(false)
   const loading = ref(false)
   const formValid = ref(false)
-  const props = defineProps<{service: DockerService}>()
+  const props = defineProps<{service: DockerServiceRo}>()
 
   const RULES = {
     required: (value: string) => value.length === 1 || 'Required',
+    commandRequiredIfChecked: (value: string) => !props.service.hasTerminal || !!value || 'Command needed'
   }
 
-  const composeData = ref<File[]>([])
+  const service = ref<{
+    composeData: File[]
+    hasTerminal: boolean
+    terminalCommand: string
+  }>({
+      composeData: [],
+      hasTerminal: props.service.hasTerminal,
+      terminalCommand: props.service.terminalCommand
+    })
 
   const update = async () => {
     if(!formValid) return
     loading.value = true
-    const data = await composeData.value[0].text();
+    const data = await service.value.composeData[0].text();
     await dockerStore.updateService(props.service.serviceName, data)
     loading.value = false
     dialog.value = false
