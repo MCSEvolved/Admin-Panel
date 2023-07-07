@@ -14,21 +14,20 @@ const tab = ref(window.location.pathname.split("/")[2]);
     <header class="navbar">
       <mcs-navbar logoSrc="/src/assets/vue.svg"/>
     </header>
-    <main style="display: flex;">
-      <div class="tabs">
+    <main>
         <v-tabs
             v-model="tab"
             direction="vertical"
             color="white" bgColor="donkerblauw"
+            mandatory
+            class="tabs"
           >
           <v-tab value="nginx" @click="router.push({name: 'nginx'})">Nginx</v-tab>
           <v-tab value="docker" @click="router.push({name: 'docker'})">Docker</v-tab>
         </v-tabs>
-      </div>
 
       <div class="window">
         <router-view></router-view>
-
       </div>
     </main>
   </div>
@@ -39,6 +38,8 @@ const tab = ref(window.location.pathname.split("/")[2]);
 
 .app {
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .navbar {
@@ -46,18 +47,21 @@ const tab = ref(window.location.pathname.split("/")[2]);
 }
 
 main {
-  width: 100vw;
-  height: calc(100% - 56px);
   background-color: #206191;
+  min-height: 0;
+  height: 100%;
 }
 
 .tabs {
   background-color: #102c47;
-  height: 100%;
+  height: 100% !important;
+  width: 120px;
+  float: left;
 }
 
 .window {
-  width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 </style>

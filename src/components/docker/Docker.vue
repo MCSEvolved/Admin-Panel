@@ -6,9 +6,8 @@
       </div>
     </v-container>
 
-    <v-container class="list" color="donkerblauw">
-      <v-layout column style="height: 100%">
-        <v-card md6 style="overflow-y: auto; height: 100%; width: 100%">
+    <v-container class="list-container">
+        <v-card class="list" color="donkerblauw">
           <v-card-title>
             <v-text-field
                 v-model="search"
@@ -96,7 +95,6 @@
 
           </v-data-table>
         </v-card>
-      </v-layout>
     </v-container>
 
     <v-overlay
@@ -116,6 +114,7 @@
     import AddServiceDialog from "./AddServiceDialog.vue";
     import EditServiceDialog from "./EditServiceDialog.vue";
     import DeleteServiceDialog from "./DeleteServiceDialog.vue";
+    import "../../styles/table.css"
 
     const dockerStore = useDockerStore()
     const search = ref("")
@@ -149,19 +148,10 @@
     }
 </script>
 
-<style>
+<style scoped>
 h1 {
     text-align: center;
     color: white;
-}
-
-.list {
-    width: 90%;
-    height: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 0px !important;
-
 }
 
 .title-container {
@@ -181,6 +171,15 @@ h1 {
 
 .status-icon {
   margin-right: 1.5rem;
+}
+
+.list-container {
+  overflow: auto;
+  height: 100%;
+}
+.list {
+  overflow: auto;
+  height: 100%;
 }
 
 </style>
