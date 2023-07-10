@@ -6,9 +6,8 @@
       </div>
     </v-container>
 
-    <v-container class="list" color="donkerblauw">
-      <v-layout column style="height: 100%">
-        <v-card md6 style="overflow-y: auto; height: 100%; width: 100%">
+    <v-container class="list-container">
+        <v-card class="list" color="donkerblauw">
           <v-card-title>
             <v-text-field
                 v-model="search"
@@ -52,7 +51,6 @@
 
           </v-data-table>
         </v-card>
-      </v-layout>
     </v-container>
 
 </template>
@@ -63,6 +61,7 @@
     import DeleteRuleDialog from "./DeleteRuleDialog.vue";
     import AddRuleDialog from "./AddRuleDialog.vue";
     import {useNginxStore, NginxRule} from "../../stores/NginxStore.ts"
+    import "../../styles/table.css"
 
     const nginxStore = useNginxStore()
     const search = ref("")
@@ -81,25 +80,17 @@
     nginxStore.fetchAllRules().finally(() => loading.value = false)
 </script>
 
-<style>
+<style scoped>
 h1 {
     text-align: center;
     color: white;
-}
-
-.list {
-    width: 90%;
-    height: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 0px !important;
-
 }
 
 .title-container {
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
     padding-bottom: 0px !important;
+    min-height: 52px;
 }
 
 .title {
@@ -109,6 +100,15 @@ h1 {
 
 .add-btn {
     grid-column-start: 3;
+}
+
+.list-container {
+  overflow: auto;
+  height: 100%;
+}
+.list {
+  overflow: auto;
+  height: 100%;
 }
 
 </style>
