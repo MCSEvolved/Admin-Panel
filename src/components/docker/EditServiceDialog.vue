@@ -32,29 +32,6 @@
               ></v-file-input>
               </v-col>
             </v-row>
-            <v-row>
-              <v-col
-                  cols="6"
-                  sm="3"
-                  md="2"
-              >
-                <v-checkbox label="has terminal" v-model="service.hasTerminal"/>
-
-              </v-col>
-
-              <v-col
-                  cols="16"
-                  sm="8"
-                  md="6"
-              >
-              <v-text-field
-                    label="Terminal command"
-                    placeholder="/bin/bash"
-                    :rules="[RULES.commandRequiredIfChecked]"
-                    v-model="service.terminalCommand"
-                ></v-text-field>
-              </v-col>
-            </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
@@ -92,17 +69,12 @@ import { DockerServiceRo, useDockerStore } from '../../stores/DockerStore';
 
   const RULES = {
     required: (value: string) => value.length === 1 || 'Required',
-    commandRequiredIfChecked: (value: string) => !props.service.hasTerminal || !!value || 'Command needed'
   }
 
   const service = ref<{
     composeData: File[]
-    hasTerminal: boolean
-    terminalCommand: string
   }>({
       composeData: [],
-      hasTerminal: props.service.hasTerminal,
-      terminalCommand: props.service.terminalCommand
     })
 
   const update = async () => {

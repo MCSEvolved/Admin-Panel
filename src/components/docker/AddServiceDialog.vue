@@ -44,29 +44,6 @@
               ></v-file-input>
               </v-col>
             </v-row>
-            <v-row>
-              <v-col
-                  cols="6"
-                  sm="3"
-                  md="2"
-              >
-                <v-checkbox label="has terminal" v-model="service.hasTerminal"/>
-
-              </v-col>
-
-              <v-col
-                  cols="16"
-                  sm="8"
-                  md="6"
-              >
-              <v-text-field
-                    label="Terminal command"
-                    placeholder="/bin/bash"
-                    :rules="[RULES.commandRequiredIfChecked]"
-                    v-model="service.terminalCommand"
-                ></v-text-field>
-              </v-col>
-            </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
@@ -106,13 +83,9 @@
   const service = ref<{
     serviceName: string
     composeData: File[]
-    hasTerminal: boolean
-    terminalCommand: string
 }>({
     serviceName: "",
     composeData: [],
-    hasTerminal: false,
-    terminalCommand: ""
   })
 
   const RULES = {
@@ -121,7 +94,6 @@
     noDuplicateName: (value: string) => !dockerStore.services.find((service) => service.serviceName === value) || 'Service name must be unique',
     onlyLetters: (value: string) => /^[A-Za-z\-]*$/.test(value) || 'Only letters and hyphens allowed',
     lowercase: (value: string) => value === value.toLowerCase() || 'Only lowercase allowed',
-    commandRequiredIfChecked: (value: string) => !service.value.hasTerminal || !!value || 'Command needed'
   }
 
   const create = async (): Promise<void> => {
@@ -130,8 +102,6 @@
     await dockerStore.createService({
       serviceName: service.value.serviceName,
       composeData: await service.value.composeData[0].text(),
-      hasTerminal: service.value.hasTerminal,
-      terminalCommand: service.value.terminalCommand
     })
     loading.value = false
     dialog.value = false

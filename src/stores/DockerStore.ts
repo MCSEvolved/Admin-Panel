@@ -5,15 +5,11 @@ import axios, { AxiosError } from 'axios'
 export interface DockerServiceRo {
     serviceName: string
     status: string
-    hasTerminal: boolean
-    terminalCommand: string
 }
 
 export interface DockerServiceDto {
     serviceName: string
     composeData: string
-    hasTerminal: boolean
-    terminalCommand: string
 }
 
 export const useDockerStore = defineStore('docker', () => {
