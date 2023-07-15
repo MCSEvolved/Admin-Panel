@@ -1,9 +1,9 @@
-// import { createApp } from 'vue'
-// import App from './App.vue'
+import { createApp } from 'vue'
+import App from './App.vue'
 import "./styles/app.css"
-// import { vuetify } from './plugins/vuetify'
-// import { pinia } from './plugins/pinia'
-// import { router } from './plugins/router'
+import { vuetify } from './plugins/vuetify'
+import { pinia } from './plugins/pinia'
+import { router } from './plugins/router'
 import { initializeApp } from 'firebase/app'
 import { getAuth} from 'firebase/auth'
 const firebaseApp = initializeApp({
@@ -18,17 +18,19 @@ const firebaseApp = initializeApp({
 
 const auth = getAuth(firebaseApp)
 //@ts-ignore
-console.log(auth._initializationPromise)
-//@ts-ignore
-auth._initializationPromise.then((e: any) => console.log(e))
+auth._initializationPromise.then((e: any) => {
+    //@ts-ignore
+    if(!auth.currentUser) window.location = '/login'
+    else {
+        createApp(App)
+            .use(vuetify)
+            .use(pinia)
+            .use(router)
+            .mount('#app')
+    }
+})
 
-console.log(auth)
-auth.beforeAuthStateChanged(usr => console.log(usr))
 
 
 
-// createApp(App)
-//     .use(vuetify)
-//     .use(pinia)
-//     .use(router)
-//     .mount('#app')
+
