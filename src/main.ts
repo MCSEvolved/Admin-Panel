@@ -19,6 +19,7 @@ const firebaseApp = initializeApp({
 const auth = getAuth(firebaseApp)
 //@ts-ignore
 auth._initializationPromise.then((e: any) => {
+    console.log("initialized")
     //@ts-ignore
     if(!auth.currentUser) window.location = '/login'
     else {
