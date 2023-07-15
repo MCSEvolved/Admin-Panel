@@ -1,9 +1,9 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+// import { createApp } from 'vue'
+// import App from './App.vue'
 import "./styles/app.css"
-import { vuetify } from './plugins/vuetify'
-import { pinia } from './plugins/pinia'
-import { router } from './plugins/router'
+// import { vuetify } from './plugins/vuetify'
+// import { pinia } from './plugins/pinia'
+// import { router } from './plugins/router'
 import { initializeApp } from 'firebase/app'
 import {getAuth} from 'firebase/auth'
 initializeApp({
