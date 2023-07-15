@@ -39,7 +39,7 @@
 
             <template v-slot:item.edit="{ item }">
               <EditServiceDialog
-                  :service="(item.columns as DockerService)"
+                  :service="(item.columns as DockerServiceRo)"
               />
             </template>
 
@@ -110,7 +110,7 @@
 
 <script setup lang="ts">
     import { DeepReadonly, ref } from 'vue'
-    import { DockerService, useDockerStore } from '../../stores/DockerStore';
+    import { DockerServiceRo, useDockerStore } from '../../stores/DockerStore';
     import AddServiceDialog from "./AddServiceDialog.vue";
     import EditServiceDialog from "./EditServiceDialog.vue";
     import DeleteServiceDialog from "./DeleteServiceDialog.vue";
