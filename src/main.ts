@@ -5,7 +5,7 @@ import "./styles/app.css"
 // import { pinia } from './plugins/pinia'
 // import { router } from './plugins/router'
 import { initializeApp } from 'firebase/app'
-import { initializeAuth} from 'firebase/auth'
+import { getAuth} from 'firebase/auth'
 const firebaseApp = initializeApp({
     apiKey: "AIzaSyBlfZjJyhjcgyPfxaqkZHSR5SciFBWC5IY",
     authDomain: "mcsynergy-55878.firebaseapp.com",
@@ -16,7 +16,11 @@ const firebaseApp = initializeApp({
     measurementId: "G-3BK4KLMGTJ"
 })
 
-const auth = initializeAuth(firebaseApp)
+const auth = getAuth(firebaseApp)
+//@ts-ignore
+console.log(auth._initializationPromise)
+//@ts-ignore
+auth._initializationPromise.then((e: any) => console.log(e))
 
 console.log(auth)
 auth.beforeAuthStateChanged(usr => console.log(usr))
