@@ -16,7 +16,7 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const fetchAllRules = async () => {
         const res = await axios.get<NginxRule[]>("https://api.mcsynergy.nl/admin-panel/nginx/all", {
-            headers: {Authorization: `Bearer ${getAuth().currentUser?.getIdToken(true)}`}
+            headers: {Authorization: `Bearer ${await getAuth().currentUser?.getIdToken(true)}`}
         })
         .catch((error: AxiosError<{message: string}>) => {
             if(error.response?.data.message === "failed to get claims") console.log('failed')//window.location.replace("https://mcsynergy.nl/login")
@@ -27,7 +27,7 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const fetchRuleById = async (id: number) => {
         const res = await axios.get<NginxRule>(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`, {
-            headers: {Authorization: `Bearer ${getAuth().currentUser?.getIdToken(true)}`}
+            headers: {Authorization: `Bearer ${await getAuth().currentUser?.getIdToken(true)}`}
         })
         .catch((error: AxiosError<{message: string}>) => {
             if(error.response?.data.message === "failed to get claims") window.location.replace("https://mcsynergy.nl/login")
@@ -43,7 +43,7 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const createRule = async (rule: NginxRule) => {
         await axios.post(`https://api.mcsynergy.nl/admin-panel/nginx`, rule, {
-            headers: {Authorization: `Bearer ${getAuth().currentUser?.getIdToken(true)}`}
+            headers: {Authorization: `Bearer ${await getAuth().currentUser?.getIdToken(true)}`}
         })
         .catch((error: AxiosError<{message: string}>) => {
             if(error.response?.data.message === "failed to get claims") window.location.replace("https://mcsynergy.nl/login")
@@ -54,7 +54,7 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const updateRule = async (id: number, rule: NginxRule) => {
         await axios.patch(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`, rule, {
-            headers: {Authorization: `Bearer ${getAuth().currentUser?.getIdToken(true)}`}
+            headers: {Authorization: `Bearer ${await getAuth().currentUser?.getIdToken(true)}`}
         })
         .catch((error: AxiosError<{message: string}>) => {
             if(error.response?.data.message === "failed to get claims") window.location.replace("https://mcsynergy.nl/login")
@@ -65,7 +65,7 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const deleteRule =async (id: number) => {
         await axios.delete(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`, {
-            headers: {Authorization: `Bearer ${getAuth().currentUser?.getIdToken(true)}`}
+            headers: {Authorization: `Bearer ${await getAuth().currentUser?.getIdToken(true)}`}
         })
         .catch((error: AxiosError<{message: string}>) => {
             if(error.response?.data.message === "failed to get claims") window.location.replace("https://mcsynergy.nl/login")

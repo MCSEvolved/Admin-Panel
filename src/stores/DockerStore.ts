@@ -18,7 +18,7 @@ export const useDockerStore = defineStore('docker', () => {
 
     const fetchAllServices = async () => {
         const res = await axios.get<DockerServiceRo[]>("https://api.mcsynergy.nl/admin-panel/docker/all", {
-            headers: {Authorization: `Bearer ${getAuth().currentUser?.getIdToken(true)}`}
+            headers: {Authorization: `Bearer ${await getAuth().currentUser?.getIdToken(true)}`}
         })
         .catch((error: AxiosError<{message: string}>) => {
             if(error.response?.data.message === "failed to get claims") window.location.replace("https://mcsynergy.nl/login")
@@ -29,7 +29,7 @@ export const useDockerStore = defineStore('docker', () => {
 
     const fetchServiceByName = async (name: string) => {
         const res = await axios.get<DockerServiceRo>(`https://api.mcsynergy.nl/admin-panel/docker/${name}`, {
-            headers: {Authorization: `Bearer ${getAuth().currentUser?.getIdToken(true)}`}
+            headers: {Authorization: `Bearer ${await getAuth().currentUser?.getIdToken(true)}`}
         })
         .catch((error: AxiosError<{message: string}>) => {
             if(error.response?.data.message === "failed to get claims") window.location.replace("https://mcsynergy.nl/login")
@@ -44,7 +44,7 @@ export const useDockerStore = defineStore('docker', () => {
 
     const fetchLogs = async (name: string) => {
         const res = await axios.get<string>(`https://api.mcsynergy.nl/admin-panel/docker/${name}/logs`, {
-            headers: {Authorization: `Bearer ${getAuth().currentUser?.getIdToken(true)}`}
+            headers: {Authorization: `Bearer ${await getAuth().currentUser?.getIdToken(true)}`}
         })
         .catch((error: AxiosError<{message: string}>) => {
             if(error.response?.data.message === "failed to get claims") window.location.replace("https://mcsynergy.nl/login")
@@ -55,7 +55,7 @@ export const useDockerStore = defineStore('docker', () => {
 
     const createService = async (service: DockerServiceDto) => {
         await axios.post(`https://api.mcsynergy.nl/admin-panel/docker`, service, {
-            headers: {Authorization: `Bearer ${getAuth().currentUser?.getIdToken(true)}`}
+            headers: {Authorization: `Bearer ${await getAuth().currentUser?.getIdToken(true)}`}
         })
         .catch((error: AxiosError<{message: string}>) => {
             if(error.response?.data.message === "failed to get claims") window.location.replace("https://mcsynergy.nl/login")
@@ -66,7 +66,7 @@ export const useDockerStore = defineStore('docker', () => {
 
     const updateService = async (name: string, service: string) => {
         await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}`, { service }, {
-            headers: {Authorization: `Bearer ${getAuth().currentUser?.getIdToken(true)}`}
+            headers: {Authorization: `Bearer ${await getAuth().currentUser?.getIdToken(true)}`}
         })
         .catch((error: AxiosError<{message: string}>) => {
             if(error.response?.data.message === "failed to get claims") window.location.replace("https://mcsynergy.nl/login")
@@ -77,7 +77,7 @@ export const useDockerStore = defineStore('docker', () => {
 
     const deleteService = async (name: string) => {
         await axios.delete(`https://api.mcsynergy.nl/admin-panel/docker/${name}`, {
-            headers: {Authorization: `Bearer ${getAuth().currentUser?.getIdToken(true)}`}
+            headers: {Authorization: `Bearer ${await getAuth().currentUser?.getIdToken(true)}`}
         })
         .catch((error: AxiosError<{message: string}>) => {
             if(error.response?.data.message === "failed to get claims") window.location.replace("https://mcsynergy.nl/login")
@@ -88,7 +88,7 @@ export const useDockerStore = defineStore('docker', () => {
 
     const startService = async (name: string) => {
         await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}/start`, {
-            headers: {Authorization: `Bearer ${getAuth().currentUser?.getIdToken(true)}`}
+            headers: {Authorization: `Bearer ${await getAuth().currentUser?.getIdToken(true)}`}
         })
         .catch((error: AxiosError<{message: string}>) => {
             if(error.response?.data.message === "failed to get claims") window.location.replace("https://mcsynergy.nl/login")
@@ -99,7 +99,7 @@ export const useDockerStore = defineStore('docker', () => {
 
     const stopService = async (name: string) => {
         await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}/stop`, {
-            headers: {Authorization: `Bearer ${getAuth().currentUser?.getIdToken(true)}`}
+            headers: {Authorization: `Bearer ${await getAuth().currentUser?.getIdToken(true)}`}
         })
         .catch((error: AxiosError<{message: string}>) => {
             if(error.response?.data.message === "failed to get claims") window.location.replace("https://mcsynergy.nl/login")
@@ -110,7 +110,7 @@ export const useDockerStore = defineStore('docker', () => {
 
     const restartService = async (name: string) => {
         await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}/restart`, {
-            headers: {Authorization: `Bearer ${getAuth().currentUser?.getIdToken(true)}`}
+            headers: {Authorization: `Bearer ${await getAuth().currentUser?.getIdToken(true)}`}
         })
         .catch((error: AxiosError<{message: string}>) => {
             if(error.response?.data.message === "failed to get claims") window.location.replace("https://mcsynergy.nl/login")
@@ -121,7 +121,7 @@ export const useDockerStore = defineStore('docker', () => {
 
     const resetService = async (name: string) => {
         await axios.patch(`https://api.mcsynergy.nl/admin-panel/docker/${name}/reset`, {
-            headers: {Authorization: `Bearer ${getAuth().currentUser?.getIdToken(true)}`}
+            headers: {Authorization: `Bearer ${await getAuth().currentUser?.getIdToken(true)}`}
         })
         .catch((error: AxiosError<{message: string}>) => {
             if(error.response?.data.message === "failed to get claims") window.location.replace("https://mcsynergy.nl/login")
