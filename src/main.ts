@@ -16,7 +16,7 @@ initializeApp({
     measurementId: "G-3BK4KLMGTJ"
 })
 
-console.log(getAuth())
+console.log(getAuth().currentUser)
 
 // createApp(App)
 //     .use(vuetify)
