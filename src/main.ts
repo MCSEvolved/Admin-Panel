@@ -5,8 +5,8 @@ import "./styles/app.css"
 // import { pinia } from './plugins/pinia'
 // import { router } from './plugins/router'
 import { initializeApp } from 'firebase/app'
-import {getAuth} from 'firebase/auth'
-initializeApp({
+import { initializeAuth} from 'firebase/auth'
+const firebaseApp = initializeApp({
     apiKey: "AIzaSyBlfZjJyhjcgyPfxaqkZHSR5SciFBWC5IY",
     authDomain: "mcsynergy-55878.firebaseapp.com",
     projectId: "mcsynergy-55878",
@@ -16,7 +16,12 @@ initializeApp({
     measurementId: "G-3BK4KLMGTJ"
 })
 
-console.log(getAuth().currentUser)
+const auth = initializeAuth(firebaseApp)
+
+console.log(auth)
+auth.beforeAuthStateChanged(usr => console.log(usr))
+
+
 
 // createApp(App)
 //     .use(vuetify)
