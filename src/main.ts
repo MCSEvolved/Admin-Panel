@@ -5,7 +5,7 @@ import { vuetify } from './plugins/vuetify'
 import { pinia } from './plugins/pinia'
 import { router } from './plugins/router'
 import { initializeApp } from 'firebase/app'
-
+import {getAuth} from 'firebase/auth'
 initializeApp({
     apiKey: "AIzaSyBlfZjJyhjcgyPfxaqkZHSR5SciFBWC5IY",
     authDomain: "mcsynergy-55878.firebaseapp.com",
@@ -16,8 +16,10 @@ initializeApp({
     measurementId: "G-3BK4KLMGTJ"
 })
 
-createApp(App)
-    .use(vuetify)
-    .use(pinia)
-    .use(router)
-    .mount('#app')
+console.log(getAuth())
+
+// createApp(App)
+//     .use(vuetify)
+//     .use(pinia)
+//     .use(router)
+//     .mount('#app')

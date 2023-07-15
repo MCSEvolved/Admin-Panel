@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import axios, { AxiosError } from 'axios'
+import axios, { AxiosError } from 'axios';
 import { getAuth } from "firebase/auth";
 
 export interface NginxRule {
@@ -19,7 +19,7 @@ export const useNginxStore = defineStore('nginx', () => {
             headers: {Authorization: `Bearer ${getAuth().currentUser?.getIdToken(true)}`}
         })
         .catch((error: AxiosError<{message: string}>) => {
-            if(error.response?.data.message === "failed to get claims") window.location.replace("https://mcsynergy.nl/login")
+            if(error.response?.data.message === "failed to get claims") console.log()//window.location.replace("https://mcsynergy.nl/login")
             else alert(`Something went wrong while fetching rules.\n${error.response?.data.message}`)
         })
         if(res) rules.value = res.data
