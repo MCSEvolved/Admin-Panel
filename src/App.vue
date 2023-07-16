@@ -12,7 +12,7 @@ const tab = ref(window.location.pathname.split("/")[2]);
 
   <div class="app">
     <header class="navbar">
-      <mcs-navbar logoSrc="/src/assets/vue.svg"/>
+      <mcs-navbar logoSrc="/src/assets/vue.svg" debug="false"/>
     </header>
     <main>
         <v-tabs

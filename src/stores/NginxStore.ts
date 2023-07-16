@@ -15,11 +15,13 @@ export const useNginxStore = defineStore('nginx', () => {
     const rules = ref<NginxRule[]>([])
 
     const fetchAllRules = async () => {
+        const idToken = await getAuth().currentUser?.getIdToken(true)
         const res = await axios.get<NginxRule[]>("https://api.mcsynergy.nl/admin-panel/nginx/all", {
-            headers: {Authorization: `Bearer ${await getAuth().currentUser?.getIdToken(true)}`}
+            headers: {Authorization: idToken}
         })
         .catch((error: AxiosError<{message: string}>) => {
-            if(error.response?.data.message === "failed to get claims") console.log('failed')//window.location.replace("https://mcsynergy.nl/login")
+            //@ts-ignore
+            if(error.response?.data.message === "failed to get claims") window.location = "/login"
             else alert(`Something went wrong while fetching rules.\n${error.response?.data.message}`)
         })
         if(res) rules.value = res.data
@@ -27,10 +29,11 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const fetchRuleById = async (id: number) => {
         const res = await axios.get<NginxRule>(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`, {
-            headers: {Authorization: `Bearer ${await getAuth().currentUser?.getIdToken(true)}`}
+            headers: {Authorization: await getAuth().currentUser?.getIdToken(true)}
         })
         .catch((error: AxiosError<{message: string}>) => {
-            if(error.response?.data.message === "failed to get claims") window.location.replace("https://mcsynergy.nl/login")
+            //@ts-ignore
+            if(error.response?.data.message === "failed to get claims") window.location = "/login"
             else alert(`Something went wrong while fetching rule (id: ${id}).\n${error.response?.data.message}`)
         })
         if(!res) return;
@@ -43,10 +46,11 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const createRule = async (rule: NginxRule) => {
         await axios.post(`https://api.mcsynergy.nl/admin-panel/nginx`, rule, {
-            headers: {Authorization: `Bearer ${await getAuth().currentUser?.getIdToken(true)}`}
+            headers: {Authorization: await getAuth().currentUser?.getIdToken(true)}
         })
         .catch((error: AxiosError<{message: string}>) => {
-            if(error.response?.data.message === "failed to get claims") window.location.replace("https://mcsynergy.nl/login")
+            //@ts-ignore
+            if(error.response?.data.message === "failed to get claims") window.location = "/login"
             else alert(`Something went wrong while creating rule.\n${error.response?.data.message}`)
         })
         await fetchAllRules()
@@ -54,10 +58,11 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const updateRule = async (id: number, rule: NginxRule) => {
         await axios.patch(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`, rule, {
-            headers: {Authorization: `Bearer ${await getAuth().currentUser?.getIdToken(true)}`}
+            headers: {Authorization: await getAuth().currentUser?.getIdToken(true)}
         })
         .catch((error: AxiosError<{message: string}>) => {
-            if(error.response?.data.message === "failed to get claims") window.location.replace("https://mcsynergy.nl/login")
+            //@ts-ignore
+            if(error.response?.data.message === "failed to get claims") window.location = "/login"
             else alert(`Something went wrong while updating rule (id: ${id}).\n${error.response?.data.message}`)
         })
         await fetchRuleById(id)
@@ -65,10 +70,11 @@ export const useNginxStore = defineStore('nginx', () => {
 
     const deleteRule =async (id: number) => {
         await axios.delete(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`, {
-            headers: {Authorization: `Bearer ${await getAuth().currentUser?.getIdToken(true)}`}
+            headers: {Authorization: await getAuth().currentUser?.getIdToken(true)}
         })
         .catch((error: AxiosError<{message: string}>) => {
-            if(error.response?.data.message === "failed to get claims") window.location.replace("https://mcsynergy.nl/login")
+            //@ts-ignore
+            if(error.response?.data.message === "failed to get claims") window.location = "/login"
             else alert(`Something went wrong while deleting rule (id: ${id}).\n${error.response?.data.message}`)
         })
         await fetchAllRules()
