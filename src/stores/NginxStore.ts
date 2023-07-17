@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import axios, { AxiosError } from 'axios';
-import { getAuth } from "firebase/auth";
 
 export interface NginxRule {
     id: number
@@ -15,26 +14,17 @@ export const useNginxStore = defineStore('nginx', () => {
     const rules = ref<NginxRule[]>([])
 
     const fetchAllRules = async () => {
-        const idToken = await getAuth().currentUser?.getIdToken(true)
-        const res = await axios.get<NginxRule[]>("https://api.mcsynergy.nl/admin-panel/nginx/all", {
-            headers: {Authorization: idToken}
-        })
+        const res = await axios.get<NginxRule[]>("https://api.mcsynergy.nl/admin-panel/nginx/all")
         .catch((error: AxiosError<{message: string}>) => {
-            //@ts-ignore
-            if(error.response?.data.message === "failed to get claims") window.location = "/login"
-            else alert(`Something went wrong while fetching rules.\n${error.response?.data.message}`)
+            alert(`Something went wrong while fetching rules.\n${error.response?.data.message}`)
         })
         if(res) rules.value = res.data
     }
 
     const fetchRuleById = async (id: number) => {
-        const res = await axios.get<NginxRule>(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`, {
-            headers: {Authorization: await getAuth().currentUser?.getIdToken(true)}
-        })
+        const res = await axios.get<NginxRule>(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`)
         .catch((error: AxiosError<{message: string}>) => {
-            //@ts-ignore
-            if(error.response?.data.message === "failed to get claims") window.location = "/login"
-            else alert(`Something went wrong while fetching rule (id: ${id}).\n${error.response?.data.message}`)
+            alert(`Something went wrong while fetching rule (id: ${id}).\n${error.response?.data.message}`)
         })
         if(!res) return;
         const {data} = res;
@@ -45,37 +35,25 @@ export const useNginxStore = defineStore('nginx', () => {
     }
 
     const createRule = async (rule: NginxRule) => {
-        await axios.post(`https://api.mcsynergy.nl/admin-panel/nginx`, rule, {
-            headers: {Authorization: await getAuth().currentUser?.getIdToken(true)}
-        })
+        await axios.post(`https://api.mcsynergy.nl/admin-panel/nginx`, rule)
         .catch((error: AxiosError<{message: string}>) => {
-            //@ts-ignore
-            if(error.response?.data.message === "failed to get claims") window.location = "/login"
-            else alert(`Something went wrong while creating rule.\n${error.response?.data.message}`)
+            alert(`Something went wrong while creating rule.\n${error.response?.data.message}`)
         })
         await fetchAllRules()
     }
 
     const updateRule = async (id: number, rule: NginxRule) => {
-        await axios.patch(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`, rule, {
-            headers: {Authorization: await getAuth().currentUser?.getIdToken(true)}
-        })
+        await axios.patch(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`, rule)
         .catch((error: AxiosError<{message: string}>) => {
-            //@ts-ignore
-            if(error.response?.data.message === "failed to get claims") window.location = "/login"
-            else alert(`Something went wrong while updating rule (id: ${id}).\n${error.response?.data.message}`)
+            alert(`Something went wrong while updating rule (id: ${id}).\n${error.response?.data.message}`)
         })
         await fetchRuleById(id)
     }
 
     const deleteRule =async (id: number) => {
-        await axios.delete(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`, {
-            headers: {Authorization: await getAuth().currentUser?.getIdToken(true)}
-        })
+        await axios.delete(`https://api.mcsynergy.nl/admin-panel/nginx/${id}`)
         .catch((error: AxiosError<{message: string}>) => {
-            //@ts-ignore
-            if(error.response?.data.message === "failed to get claims") window.location = "/login"
-            else alert(`Something went wrong while deleting rule (id: ${id}).\n${error.response?.data.message}`)
+            alert(`Something went wrong while deleting rule (id: ${id}).\n${error.response?.data.message}`)
         })
         await fetchAllRules()
     }

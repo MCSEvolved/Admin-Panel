@@ -4,8 +4,10 @@ import "./styles/app.css"
 import { vuetify } from './plugins/vuetify'
 import { pinia } from './plugins/pinia'
 import { router } from './plugins/router'
+import { initAxios } from './plugins/axios'
 import { initializeApp } from 'firebase/app'
 import { getAuth} from 'firebase/auth'
+
 const firebaseApp = initializeApp({
     apiKey: "AIzaSyBlfZjJyhjcgyPfxaqkZHSR5SciFBWC5IY",
     authDomain: "mcsynergy-55878.firebaseapp.com",
@@ -19,6 +21,7 @@ const firebaseApp = initializeApp({
 const auth = getAuth(firebaseApp)
 //@ts-ignore
 auth._initializationPromise.then((e: any) => {
+    initAxios()
     //@ts-ignore
     if(!auth.currentUser) window.location = '/login'
     else
