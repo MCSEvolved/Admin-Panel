@@ -2,7 +2,7 @@
 import "mcs-navbar"
 import { ref } from "vue";
 import {useRouter} from 'vue-router'
-
+import logo from "./assets/vue.svg"
 const router = useRouter()
 const tab = ref(window.location.pathname.split("/")[2]);
 
@@ -12,7 +12,7 @@ const tab = ref(window.location.pathname.split("/")[2]);
 
   <div class="app">
     <header class="navbar">
-      <mcs-navbar logoSrc="/src/assets/vue.svg" debug="false"/>
+      <mcs-navbar :logoSrc="logo" debug="false"/>
     </header>
     <main>
         <v-tabs
