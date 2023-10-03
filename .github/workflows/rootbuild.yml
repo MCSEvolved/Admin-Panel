@@ -26,6 +26,6 @@ jobs:
         uses: mvasigh/dispatch-action@main
         with:
           token: ${{ secrets.BOTS_ACCESS_TOKEN }}
-          repo: Frontend-Root
+          repo: frontend-root
           owner: MCSEvolved
           event_type: rootbuild
