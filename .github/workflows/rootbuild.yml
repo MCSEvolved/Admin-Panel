@@ -23,9 +23,11 @@ jobs:
         run: npm run build
         
       - name: Emit rootbuild repository_dispatch
-        uses: mvasigh/dispatch-action@main
-        with:
-          token: ${{ secrets.BOTS_ACCESS_TOKEN }}
-          repo: frontend-root
-          owner: MCSEvolved
-          event_type: rootbuild
+        run: |
+          curl -L 'https://api.github.com/repos/MCSEvolved/frontend-root/dispatches' \
+            -H 'Accept: application/vnd.github.everest-preview+json' \
+            -H 'Content-Type: application/json' \
+            -H 'Authorization: Bearer ${{ secrets.BOTS_ACCESS_TOKEN }}' \
+            -d '{
+                "event_type": "rootbuild"
+            }'
