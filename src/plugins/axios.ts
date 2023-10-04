@@ -10,7 +10,7 @@ export const initAxios = () => {
 
     axios.interceptors.response.use(response => response, error => {
         //@ts-ignore
-        if(error.response?.data.message === "failed to get claims") window.location = "/login"
+        if(error.response?.data.message === "failed to get claims") window.location = `/login?redirect=${window.location.pathname.substring(1)}`
         else return error
     })
 }
