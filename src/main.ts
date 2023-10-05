@@ -23,7 +23,7 @@ const auth = getAuth(firebaseApp)
 auth._initializationPromise.then((e: any) => {
     initAxios()
     //@ts-ignore
-    if(!auth.currentUser) window.location = `/login?redirect=${window.location.pathname.substring(1)}`
+    if(!auth.currentUser) window.location = `/login?redirect=${window.location.href}`
     else
         createApp(App)
             .use(vuetify)
